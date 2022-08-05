@@ -17,7 +17,7 @@ namespace Microsoft.DotNet.Interactive
 {
     public class PackageRestoreContext : IDisposable
     {
-        private const string restoreTfm = "net6.0";
+        private const string restoreTfm = "net7.0";
         private readonly ConcurrentDictionary<string, PackageReference> _requestedPackageReferences = new(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, ResolvedPackageReference> _resolvedPackageReferences = new(StringComparer.OrdinalIgnoreCase);
 
