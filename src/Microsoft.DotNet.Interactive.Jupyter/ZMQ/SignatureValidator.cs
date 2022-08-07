@@ -17,7 +17,26 @@ namespace Microsoft.DotNet.Interactive.Jupyter.ZMQ
         public SignatureValidator(string key, string algorithm)
         {
             _encoder = new UTF8Encoding();
-            _signatureGenerator = HMAC.Create(algorithm);
+            _signatureGenerator = algorithm switch
+            {
+                "System.Security.Cryptography.HMAC" => new HMACSHA1(),
+                "System.Security.Cryptography.KeyedHashAlgorithm" => new HMACSHA1(),
+                "HMACMD5" => new HMACMD5(),
+                "System.Security.Cryptography.HMACMD5" => new HMACMD5(),
+                // "HMACRIPEMD160" => new System.Security.Cryptography.HMACRIPEMD160(),
+                // "System.Security.Cryptography.HMACRIPEMD160" => new System.Security.Cryptography.HMACRIPEMD160(),
+                "HMACSHA1" => new HMACSHA1(),
+                "System.Security.Cryptography.HMACSHA1" => new HMACSHA1(),
+                "HMACSHA256" => new HMACSHA256(),
+                "System.Security.Cryptography.HMACSHA256" => new HMACSHA256(),
+                "HMACSHA384" => new HMACSHA384(),
+                "System.Security.Cryptography.HMACSHA384" => new HMACSHA384(),
+                "HMACSHA512" => new HMACSHA512(),
+                "System.Security.Cryptography.HMACSHA512" => new HMACSHA512(),
+                // "MACTripleDES" => System.Security.Cryptography.MACTripleDES.Create(),
+                // "System.Security.Cryptography.MACTripleDES" => System.Security.Cryptography.MACTripleDES.Create(),
+                _ => throw new ArgumentException($"algorithm name is invalid: {algorithm}")
+            };
             _signatureGenerator.Key = _encoder.GetBytes(key);
         }
 
